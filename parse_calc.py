@@ -49,3 +49,79 @@ def stmt():
         expr()
     else:
         raise SyntaxError("Parse error at " + str(tokens))
+
+
+def expr():
+    t = tokens[0][1]
+    if t in ['id', '(', 'number']:
+        term()
+        term_tail()
+    else:
+        raise SyntaxError("Parse error at " + str(tokens))
+
+
+def term_tail():
+    t = tokens[0][1]
+    if t in ['+', '-']:
+        add_op()
+        term()
+        term_tail()
+    elif t in [')', 'read', 'write', '$$']:
+        pass
+    else:
+        raise SyntaxError("Parse error at " + str(tokens))
+
+
+def term():
+    t = tokens[0][1]
+    if t in ['id', 'number', '(']:
+        factor()
+        factor_tail()
+    else:
+        raise SyntaxError("Parse error at " + str(tokens))
+
+
+def factor_tail():
+    t = tokens[0][1]
+    if t in ['*', '/']:
+        mult_op()
+        factor()
+        factor_tail()
+    elif t in ['+', '-', ')', 'id', 'read', 'write', '$$']:
+        pass
+    else:
+        raise SyntaxError("Parse error at " + str(tokens))
+
+
+def factor():
+    t = tokens[0][1]
+    if t == '(':
+        match('(')
+        expr()
+        match(')')
+    elif t == 'id':
+        match('id')
+    elif t == 'number':
+        match('number')
+    else:
+        raise SyntaxError("Parse error at " + str(tokens))
+
+
+def add_op():
+    t = tokens[0][1]
+    if t == '+':
+        match('+')
+    elif t == '-':
+        match('-')
+    else:
+        raise SyntaxError("Parse error at " + str(tokens))
+
+
+def mult_op():
+    t = tokens[0][1]
+    if t == '*':
+        match('*')
+    elif t == '/':
+        match('/')
+    else:
+        raise SyntaxError("Parse error at " + str(tokens))
