@@ -23,5 +23,5 @@ for i in numbers():
     if i >= 10:
         break
 
-print([x for x in numbers() if x < 10])
+#print([x for x in numbers() if x < 10])
 
